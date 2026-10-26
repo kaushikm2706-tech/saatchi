@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+work/
+*.raw.txt
+report.html*
+.env
+*.wav
