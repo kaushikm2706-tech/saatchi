@@ -1,0 +1,5 @@
+[
+  {"clip": "c01_truthful", "claims": [{"match": "4 bolts", "gold": "SUPPORTED"}]},
+  {"clip": "c01_false_count", "claims": [{"match": "6 bolts", "gold": "CONTRADICTED"}]},
+  {"clip": "c01_false_order", "claims": [{"match": "before", "gold": "CONTRADICTED"}]}
+]

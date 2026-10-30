@@ -12,3 +12,9 @@ AI-assisted development: this repo was written with Claude Code assistance, dire
 - SAM raw output layout beyond the documented box marker (run `sam-probe`).
 - Spark Responses output shape and token cost for video.
 - Tamil/Tanglish transcription quality.
+
+## 2026-10-30
+- Retries with exponential backoff (429/5xx); Spark-only ablation mode; active re-check loop (`pipeline.recheck`).
+- Saatchi-Bench scorer (coverage, accuracy on answered, false-confirmation rate, bootstrap CIs, ablation) - offline.
+- Local web UI (stdlib), `mux` helper to attach recorded narrations, docs (filming guide, demo script, submission text, push steps).
+- 18 mocked tests pass. Still no live API call made: all [U] items above remain unverified.

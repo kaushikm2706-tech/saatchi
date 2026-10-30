@@ -1,6 +1,6 @@
-import json, requests
+import json
 from .config import BASE_URL, VOICE_MODEL
-from .http import headers
+from .http import headers, request_with_retry
 from .models import Turn
 
 KEYWORDS = ["bolt", "nut", "wrench", "torque", "valve", "pipe", "wire", "switch"]
@@ -18,11 +18,11 @@ def parse_turns(resp: dict) -> list:
 
 def transcribe(wav_path: str, keywords=None) -> list:
     req = build_request(keywords)
-    with open(wav_path, "rb") as f:
-        r = requests.post(
-            f"{BASE_URL}/asr/transcribe", headers=headers({"Accept": "application/json"}),
-            files={"request": (None, json.dumps(req), "application/json"),
-                   "audio": ("audio.wav", f, "audio/wav")}, timeout=600)
+    data = open(wav_path, "rb").read()
+    r = request_with_retry(
+        "POST", f"{BASE_URL}/asr/transcribe", headers=headers({"Accept": "application/json"}),
+        files={"request": (None, json.dumps(req), "application/json"),
+               "audio": ("audio.wav", data, "audio/wav")}, timeout=600)
     r.raise_for_status()
     return parse_turns(r.json())
 

@@ -59,3 +59,11 @@ class Result:
 
     def to_dict(self):
         return asdict(self)
+
+
+def result_from_dict(d: dict) -> "Result":
+    c = Claim(**d["claim"])
+    sp = SparkEvidence(**d["spark"]) if d.get("spark") else None
+    sa = d.get("sam")
+    sam = SamEvidence(**{**sa, "intervals_s": [tuple(x) for x in sa["intervals_s"]]}) if sa else None
+    return Result(c, d["verdict"], d["reason"], sp, sam, d.get("request"))

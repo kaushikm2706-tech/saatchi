@@ -92,3 +92,37 @@ def test_pipeline_with_mocks(tmp_path):
                           sam.MockSam({"bolt": ev(4, 4)}), lambda p: "file-1")
     res = pipeline.run(video, str(tmp_path / "w"), b)
     assert [r.verdict for r in res] == [SUPPORTED]
+
+
+def _video(tmp_path):
+    video = str(tmp_path / "v.mp4")
+    subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", "testsrc=duration=2:size=160x120:rate=15",
+                    "-f", "lavfi", "-i", "sine=duration=2", "-shortest", "-pix_fmt", "yuv420p", video],
+                   check=True, capture_output=True)
+    return video
+
+
+def test_spark_only_skips_sam_and_recheck(tmp_path):
+    video = _video(tmp_path)
+    claims = [Claim(0, 0, "q", "I fitted 4 bolts", "count", "bolt", 4)]
+    calls = []
+    def tracker(noun, fid, fps, dump=None):
+        calls.append(noun); return ev(4, 4)
+    b = pipeline.Backends(voice.MockVoice([Turn(0, 0, 1500, "x")]),
+                          spark.MockSpark(claims, {0: sp(UNVERIFIABLE, 0.2)}), tracker, lambda p: "file-1")
+    res = pipeline.run(video, str(tmp_path / "w"), b, use_sam=False)
+    assert calls == [] and res[0].verdict == UNVERIFIABLE and res[0].request
+    # user sends the requested clip; Spark now confident
+    b.spark = spark.MockSpark(claims, {0: sp(SUPPORTED, 0.9)})
+    new = pipeline.recheck(res[0], video, str(tmp_path / "w2"), b)
+    assert new.verdict == SUPPORTED and calls == ["bolt"]
+
+
+def test_mux(tmp_path):
+    from saatchi import ingest
+    video = _video(tmp_path)
+    subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", "sine=frequency=300:duration=2", str(tmp_path / "n.wav")],
+                   check=True, capture_output=True)
+    out = ingest.mux_narration(video, str(tmp_path / "n.wav"), str(tmp_path / "o.mp4"))
+    streams = {s["codec_type"] for s in ingest.probe(out)["streams"]}
+    assert streams == {"video", "audio"}

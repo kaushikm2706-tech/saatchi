@@ -35,3 +35,10 @@ def make_sam_copy(video: str, out_mp4: str, fps: int = 15) -> str:
     _run(["ffmpeg", "-y", "-i", video, "-vf", f"fps={fps}", "-an", "-c:v", "libx264",
           "-preset", "veryfast", "-pix_fmt", "yuv420p", out_mp4])
     return out_mp4
+
+
+def mux_narration(video: str, narration_audio: str, out_mp4: str) -> str:
+    """Replace a clip's audio with a separately recorded narration (lets one video carry truthful + falsified narrations)."""
+    _run(["ffmpeg", "-y", "-i", video, "-i", narration_audio, "-map", "0:v:0", "-map", "1:a:0",
+          "-c:v", "copy", "-c:a", "aac", "-shortest", out_mp4])
+    return out_mp4
