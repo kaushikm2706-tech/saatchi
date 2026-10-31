@@ -18,3 +18,7 @@ AI-assisted development: this repo was written with Claude Code assistance, dire
 - Saatchi-Bench scorer (coverage, accuracy on answered, false-confirmation rate, bootstrap CIs, ablation) - offline.
 - Local web UI (stdlib), `mux` helper to attach recorded narrations, docs (filming guide, demo script, submission text, push steps).
 - 18 mocked tests pass. Still no live API call made: all [U] items above remain unverified.
+
+## 2026-10-31
+- Meta hackathon submission dropped (no payment method for the API). Project continues as a research benchmark on open-weight models.
+- Added docs/RESEARCH_PLAN.md after a literature/novelty search (MAD2, TRILOGUE, AVID found; none cover this exact task as far as one search shows).
