@@ -22,3 +22,6 @@ AI-assisted development: this repo was written with Claude Code assistance, dire
 ## 2026-10-31
 - Meta hackathon submission dropped (no payment method for the API). Project continues as a research benchmark on open-weight models.
 - Added docs/RESEARCH_PLAN.md after a literature/novelty search (MAD2, TRILOGUE, AVID found; none cover this exact task as far as one search shows).
+
+## 2026-11-03
+- Renamed saatchi/http.py to saatchi/apiclient.py: it shadowed Python's standard `http` module when the package folder was on sys.path (found when tests failed on the author's Windows machine).

@@ -8,7 +8,7 @@ class Backends:
 
 
 def live_backends():
-    from .http import upload_file
+    from .apiclient import upload_file
     return Backends(voice.transcribe, spark, sam.track, upload_file)
 
 

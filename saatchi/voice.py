@@ -1,6 +1,6 @@
 import json
 from .config import BASE_URL, VOICE_MODEL
-from .http import headers, request_with_retry
+from .apiclient import headers, request_with_retry
 from .models import Turn
 
 KEYWORDS = ["bolt", "nut", "wrench", "torque", "valve", "pipe", "wire", "switch"]

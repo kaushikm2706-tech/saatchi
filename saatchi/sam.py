@@ -7,7 +7,7 @@ a real stream is captured: run `python -m saatchi.cli sam-probe` and keep the ra
 """
 import json, re
 from .config import SAM_MODEL
-from .http import post_json
+from .apiclient import post_json
 from .models import Track, SamEvidence
 
 FRAME_RE = re.compile(r"<(\d+)f>")

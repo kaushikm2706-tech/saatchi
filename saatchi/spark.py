@@ -1,6 +1,6 @@
 import json, re
 from .config import SPARK_MODEL
-from .http import post_json
+from .apiclient import post_json
 from .models import Claim, SparkEvidence, UNVERIFIABLE, SUPPORTED, CONTRADICTED
 
 CLAIM_PROMPT = """You get a worker's narration as timed turns (Tamil, English or mixed).

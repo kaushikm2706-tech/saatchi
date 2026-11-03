@@ -35,7 +35,7 @@ def main(argv=None):
         if not a.live:
             sys.exit("Refusing to call the API without --live.")
         from . import sam
-        from .http import upload_file
+        from .apiclient import upload_file
         ev = sam.track(a.noun, upload_file(a.video), 15.0, dump_path="sam_probe.raw.txt")
         print(ev); print("raw stream saved to sam_probe.raw.txt (check it matches the parser; paste the first 600 chars to Claude)")
         return
